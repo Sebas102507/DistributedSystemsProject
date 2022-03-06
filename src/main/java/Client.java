@@ -7,14 +7,14 @@ public class Client {
 
     public static void main(String[] args) {
         System.out.println("Loading...");
-        CalculatorInterface calculatorInterface;
+        ServerFunctionsInterface serverFunctionsInterface;
         String serverAddress= Client.getServerIPaddress();
         int serverPort=Client.getServerPort();
         try {
             Registry registry= LocateRegistry.getRegistry(serverAddress,serverPort);
-            calculatorInterface= (CalculatorInterface) (registry.lookup("server__"));
+            serverFunctionsInterface = (ServerFunctionsInterface) (registry.lookup("server__"));
             System.out.println("Ready...!!");
-            Client.chooseOption(calculatorInterface);
+            Client.chooseOption(serverFunctionsInterface);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -30,7 +30,7 @@ public class Client {
         return port;
     }
 
-    static void chooseOption(CalculatorInterface calInter) throws Exception{
+    static void chooseOption(ServerFunctionsInterface serverFunctionsInterface) throws Exception{
         String id;
         String group;
         String name;
@@ -40,22 +40,22 @@ public class Client {
                 option= Integer.parseInt(JOptionPane.showInputDialog("Elige una opción: \n1) Ver nombre de estudiante \n2) Ver promedio de estudiante\n3) Ver grupo de estudiante  \n4) Ver estudiantes de un grupo \n5) Salir"));
                 if(option==1){
                     id= Client.getStudentId();
-                    JOptionPane.showMessageDialog(null,"El nombre del estudiante es: "+calInter.getStudentName(id));
+                    JOptionPane.showMessageDialog(null,"El nombre del estudiante es: "+serverFunctionsInterface.getStudentName(id));
                 }else if(option==2){
                     int opt= Client.getOption();
                     if (opt==1){
                         name= Client.getStudentName();
-                        JOptionPane.showMessageDialog(null,"El promedio del estudiante es : "+calInter.getStudentGradesAverage(name,null));
+                        JOptionPane.showMessageDialog(null,"El promedio del estudiante es : "+serverFunctionsInterface.getStudentGradesAverage(name,null));
                     }else{
                         id= Client.getStudentId();
-                        JOptionPane.showMessageDialog(null,"El promedio del estudiante es : "+calInter.getStudentGradesAverage(null,id));
+                        JOptionPane.showMessageDialog(null,"El promedio del estudiante es : "+serverFunctionsInterface.getStudentGradesAverage(null,id));
                     }
                 }else if(option==3){
                     id= Client.getStudentId();
-                    JOptionPane.showMessageDialog(null,"El grupo del estudiante es : "+calInter.getStudentGroup(id));
+                    JOptionPane.showMessageDialog(null,"El grupo del estudiante es : "+serverFunctionsInterface.getStudentGroup(id));
                 }else if(option==4){
                     group= Client.getGroup();
-                    String studentsName= Client.getStudentsName(calInter.getStudentsFromGroup(group));
+                    String studentsName= Client.getStudentsName(serverFunctionsInterface.getStudentsFromGroup(group));
                     JOptionPane.showMessageDialog(null,studentsName);
                 }else if(option==5){
                     break;

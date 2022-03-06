@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Server extends UnicastRemoteObject implements CalculatorInterface {
+public class Server extends UnicastRemoteObject implements ServerFunctionsInterface {
 
     private  final int PORT= 3030;
     private List<Student> students_db;
@@ -28,7 +28,7 @@ public class Server extends UnicastRemoteObject implements CalculatorInterface {
             String ip_address= (InetAddress.getLocalHost()).toString();
             System.out.println("Listening in IP: "+ip_address+" PORT: "+PORT);
             Registry registry= LocateRegistry.createRegistry(PORT);
-            registry.bind("server__", (CalculatorInterface) this);
+            registry.bind("server__", (ServerFunctionsInterface) this);
         }catch (Exception e){
             e.printStackTrace();
         }
